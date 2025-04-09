@@ -1,11 +1,10 @@
 import sqlite3
 
 def create_tables():
-    # Connect to the database file (creates it if it doesn't exist)
+
     conn = sqlite3.connect('database.db')
     cursor = conn.cursor()
 
-    # SQL commands to create the tables
     cursor.execute('''
     CREATE TABLE IF NOT EXISTS Person (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -108,7 +107,6 @@ def create_tables():
         status TEXT
     )''')
 
-    # Commit changes and close connection
     conn.commit()
     conn.close()
     print("Tables created successfully!")
