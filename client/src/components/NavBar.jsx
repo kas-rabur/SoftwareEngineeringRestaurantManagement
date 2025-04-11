@@ -12,7 +12,9 @@ const NavBar = () => {
         <li><Link to="/staff">Staff</Link></li>
         <li><Link to="/management">Management</Link></li>
       </ul>
-      <button className="button">Sign Up</button>
+      <Link to="/login">
+        <button className="button">Log In</button>
+      </Link>
     </nav>
   );
 };
