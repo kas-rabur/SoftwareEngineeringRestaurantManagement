@@ -19,6 +19,9 @@ function LoginForm() {
                 <div className="login-container">
                     <button className="login-button" type="submit">Login</button>
                 </div>
+                <div className="register-container">
+                    <p>Don't have an account? <a href="/register">Register</a></p>
+                </div>
             </div>
         </div>
     );

@@ -129,3 +129,14 @@
     color: #525252;
 
 }
+.register-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding-top: 50px;
+}
+.register-container a {
+    color: #4caf50;
+    text-decoration: none;
+    transition: color 0.3s ease, text-decoration 0.3s ease;
+}
