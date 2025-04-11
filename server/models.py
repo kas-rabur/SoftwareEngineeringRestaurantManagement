@@ -2,7 +2,6 @@ class Person:
     def __init__(self, name, contact, address, email):
         self.name = name
         self.contact = contact
-        self.address = address
         self.email = email
 
     def ChangeInfo(self, name, contact, address, email):
