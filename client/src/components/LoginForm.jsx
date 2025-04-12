@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 
 function LoginForm() {
   const [formData, setFormData] = useState({
-    username: "",
+    email: "",
     password: "",
   });
 
@@ -45,14 +45,14 @@ function LoginForm() {
       <form className="login-form" onSubmit={handleSubmit}>
         <h2>Login to Your Dashboard</h2>
         <div className="form-group">
-          <label>Username</label>
+          <label>Email</label>
           <input
             type="text"
-            id="username"
-            name="username"
-            value={formData.username}
+            id="email"
+            name="email"
+            value={formData.email}
             onChange={handleChange}
-            placeholder="Your Username"
+            placeholder="Your email"
             required
           />
 

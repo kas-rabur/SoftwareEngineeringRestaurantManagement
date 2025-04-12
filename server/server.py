@@ -28,7 +28,7 @@ def login_user():
     print("Received login request")
     data = request.get_json()
 
-    email = data.get("username") 
+    email = data.get("email") 
     password = data.get("password")
     print(f"Logging in user: {email}")
     print(f"Password: {password}")
