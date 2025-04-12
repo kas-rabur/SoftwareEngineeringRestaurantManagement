@@ -20,7 +20,6 @@ function RegisterForm() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Optional: Basic client-side validation
     if (formData.password !== formData.confirmPassword) {
       alert("Passwords do not match");
       return;

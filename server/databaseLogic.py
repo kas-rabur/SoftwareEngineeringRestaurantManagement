@@ -29,3 +29,17 @@ def register_customer(name, contact, email, password):
         return "User already exists"
     finally:
         conn.close()
+
+def login_customer(email, password):
+    conn = connect_db()
+    cursor = conn.cursor()
+    cursor.execute('''
+        SELECT * FROM Person WHERE email = ? AND password = ?
+    ''', (email, password))
+    user = cursor.fetchone()
+    conn.close()
+    
+    if user:
+        return "Login successful"
+    else:
+        return "Invalid email or password"
