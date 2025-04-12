@@ -15,12 +15,17 @@ def create_reservation(customer_id, date, time, table_number, status):
     conn.close()
 
 
-def register_customer(name, contact, address, email, password):
+def register_customer(name, contact, email, password):
     conn = connect_db()
     cursor = conn.cursor()
-    cursor.execute('''
-        INSERT INTO Customers (name, contact, address, email, password)
-        VALUES (?, ?, ?, ?, ?)
-    ''', (name, contact, address, email, password))
-    conn.commit()
-    conn.close()
+    try:
+        cursor.execute('''
+            INSERT INTO Person (name, contact, email, password)
+            VALUES (?, ?, ?, ?)
+        ''', (name, contact, email, password))
+        conn.commit()
+        return "User registered successfully"
+    except sqlite3.IntegrityError:
+        return "User already exists"
+    finally:
+        conn.close()
