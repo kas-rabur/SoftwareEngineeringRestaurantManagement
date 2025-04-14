@@ -5,6 +5,7 @@ import HomePage from "./components/HomePage";
 import CustomerPage from "./components/CustomerPage";
 import LoginPage from "./components/LoginPage";
 import RegisterPage from "./components/RegisterPage";
+import ProtectedRoutes from "./components/ProtectedRoutes";
 
 const App = () => {
   return (
@@ -12,7 +13,11 @@ const App = () => {
       <NavBar />
       <Routes>
         <Route path="/home" element={<HomePage />} />
-        <Route path="/customer" element={<CustomerPage/>} />
+        <Route path="/customer" element={
+          <ProtectedRoutes>
+            <CustomerPage />
+          </ProtectedRoutes>
+        } />
         <Route path="/staff" element={<div>Staff Page</div>} />
         <Route path="/management" element={<div>Management Page</div>} />
         <Route path="/login" element={<LoginPage />} />

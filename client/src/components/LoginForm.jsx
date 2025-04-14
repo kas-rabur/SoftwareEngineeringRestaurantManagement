@@ -17,7 +17,7 @@ function LoginForm() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+  
     try {
       const res = await fetch("http://localhost:5000/api/login", {
         method: "POST",
@@ -26,10 +26,12 @@ function LoginForm() {
         },
         body: JSON.stringify(formData),
       });
-
+  
       const data = await res.json();
       if (res.ok) {
         alert("Login successful!");
+
+        localStorage.setItem("token", data.token);
         navigate("/customer"); 
       } else {
         alert("Error: " + data.message);
@@ -39,6 +41,7 @@ function LoginForm() {
       alert("Failed to login.");
     }
   };
+  
 
   return (
     <div className="login-box">
