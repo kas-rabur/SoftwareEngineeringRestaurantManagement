@@ -5,11 +5,28 @@ import jwt
 import os
 import datetime
 
+
 app = Flask(__name__)
 CORS(app)  
 
 secret_key = "1234567890" #temp secret key
 
+# token verification 
+def verify_token():
+    auth_header = request.headers.get("Authorization")
+    if not auth_header:
+        return None, jsonify({"message": "Missing token"}), 401
+
+    token = auth_header.split(" ")[1] if " " in auth_header else auth_header
+
+    try:
+        payload = jwt.decode(token, secret_key, algorithms=["HS256"])
+        return payload, None, None
+    except jwt.ExpiredSignatureError:
+        return None, jsonify({"message": "Token expired"}), 401
+    except jwt.InvalidTokenError:
+        return None, jsonify({"message": "Invalid token"}), 401
+    
 #register route 
 @app.route("/api/register", methods=["POST"])
 def register_user():
