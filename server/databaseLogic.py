@@ -43,3 +43,30 @@ def login_customer(email, password):
         return "Login successful"
     else:
         return "Invalid email or password"
+
+def get_all_tables_with_status(date, time):
+    conn = connect_db()
+    cursor = conn.cursor()
+
+    cursor.execute('''
+        SELECT table_id FROM Reservations
+        WHERE reservation_date = ? AND reservation_time = ? AND status = 'confirmed'
+    ''', (date, time))
+    reserved = set(row[0] for row in cursor.fetchall())
+
+    cursor.execute('''
+        SELECT table_id, capacity FROM TableInfo
+    ''')
+    tables = cursor.fetchall()
+    conn.close()
+
+    return [
+        {
+            "table_id": table[0],
+            "capacity": table[1],
+            "available": table[0] not in reserved
+        }
+        for table in tables
+    ]
+
+

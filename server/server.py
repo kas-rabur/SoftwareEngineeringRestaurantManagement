@@ -67,6 +67,17 @@ def login_user():
     else:
         return jsonify({"message": result}), 401
 
+@app.route("/api/getTableAvailability", methods=["POST"])
+def get_table_availability():
+    data = request.get_json()
+    date = data.get("date")
+    time = data.get("time")
+
+    table_status = dbLogic.get_all_tables_with_status(date, time)
+
+    return jsonify({"tables": table_status}), 200
+
+    
 
 if __name__ == "__main__":
     app.run(debug=True, port=5000)
