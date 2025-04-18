@@ -10,8 +10,8 @@ const CheckAvailabilityCard = () => {
 
     const handleCheckAvailability = async () => {
         if (!date || !time) {
-        setErrorMsg("Please select both date and time.");
-        return;
+            setErrorMsg("Please select both date and time.");
+            return;
         }
 
         setLoading(true);
@@ -19,83 +19,82 @@ const CheckAvailabilityCard = () => {
         setAvailableTables([]);
 
         try {
-        const response = await fetch("http://localhost:5000/api/getTableAvailability", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ date, time })
-        });
+            const response = await fetch("http://localhost:5000/api/getTableAvailability", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ date, time })
+            });
 
-        const data = await response.json();
+            const data = await response.json();
 
-        if (response.ok) {
-            setAvailableTables(data.tables);
-        } else {
-            setErrorMsg(data.message || "Could not fetch table data.");
-        }
+            if (response.ok) {
+                setAvailableTables(data.tables);
+            } else {
+                setErrorMsg(data.message || "Could not fetch table data.");
+            }
         } catch (error) {
-        setErrorMsg("Network error. Please try again.");
+            setErrorMsg("Network error. Please try again.");
         } finally {
-        setLoading(false);
+            setLoading(false);
         }
     };
+
     return (
-        <div className="dashboard-cards">
-        <div className="card-customer" id="book-table">
-          <h2>Check Availability</h2>
-          <p>Find available tables at your desired date and time.</p>
+        <div className="check-availability-card" id="book-table">
+            <h2>Check Availability</h2>
+            <p>Find available tables at your desired date and time.</p>
 
-          <div className="booking-form">
-            <label className="form-label">
-              Select Date:
-              <input
-                type="date"
-                value={date}
-                onChange={(e) => setDate(e.target.value)}
-                className="input-field"
-              />
-            </label>
+            <div className="availability-booking-form">
+                <label className="availability-form-label">
+                    Select Date:
+                    <input
+                        type="date"
+                        value={date}
+                        onChange={(e) => setDate(e.target.value)}
+                        className="availability-input-field"
+                    />
+                </label>
 
-            <label className="form-label">
-              Select Time:
-              <input
-                type="time"
-                value={time}
-                onChange={(e) => setTime(e.target.value)}
-                className="input-field"
-              />
-            </label>
+                <label className="availability-form-label">
+                    Select Time:
+                    <input
+                        type="time"
+                        value={time}
+                        onChange={(e) => setTime(e.target.value)}
+                        className="availability-input-field"
+                    />
+                </label>
 
-            <button className="check-btn" onClick={handleCheckAvailability}>
-              {loading ? "Checking..." : "Check Availability"}
-            </button>
+                <button className="availability-check-btn" onClick={handleCheckAvailability}>
+                    {loading ? "Checking..." : "Check Availability"}
+                </button>
 
-            {errorMsg && <p className="error-text">{errorMsg}</p>}
+                {errorMsg && <p className="availability-error-text">{errorMsg}</p>}
 
-            {availableTables.length > 0 && (
-              <div>
-                <strong>Available Tables:</strong>
-                <div className="table-grid">
-                  {availableTables.map(({ table_id, capacity, available }) => (
-                    <div
-                      key={table_id}
-                      className={`table-card ${!available ? "unavailable" : ""}`}
-                      title={available ? "Available" : "Unavailable"}
-                    >
-                      <p><strong>Table {table_id}</strong></p>
-                      <p>Capacity: {capacity}</p>
+                {availableTables.length > 0 && (
+                    <div>
+                        <strong>Available Tables:</strong>
+                        <div className="availability-table-grid">
+                            {availableTables.map(({ table_id, capacity, available }) => (
+                                <div
+                                    key={table_id}
+                                    className={`availability-table-card ${!available ? "unavailable" : ""}`}
+                                    title={available ? "Available" : "Unavailable"}
+                                >
+                                    <p><strong>Table {table_id}</strong></p>
+                                    <p>Capacity: {capacity}</p>
+                                </div>
+                            ))}
+                        </div>
                     </div>
-                  ))}
-                </div>
-              </div>
-            )}
+                )}
 
-            {availableTables.length === 0 && !loading && date && time && !errorMsg && (
-              <p>No tables available at this time.</p>
-            )}
-          </div>
+                {availableTables.length === 0 && !loading && date && time && !errorMsg && (
+                    <p>No tables available at this time.</p>
+                )}
+            </div>
         </div>
-    </div>
-    )
-    }
+    );
+}
 
 export default CheckAvailabilityCard;
