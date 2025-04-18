@@ -69,4 +69,14 @@ def get_all_tables_with_status(date, time):
         for table in tables
     ]
 
+def make_reservation(customer_id, reservation_date, reservation_time, table_id):
+    conn = connect_db()
+    cursor = conn.cursor()
 
+    cursor.execute('''
+        INSERT INTO Reservation (customer_id, reservation_date, reservation_time, table_id, status) 
+        VALUES (?, ?, ?, ?, ?)
+''', (customer_id, reservation_date, reservation_time, table_id, "confirmed"))
+    
+    conn.commit()
+    conn.close()

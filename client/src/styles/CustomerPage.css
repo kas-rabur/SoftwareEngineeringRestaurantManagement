@@ -106,7 +106,7 @@
 
 .check-btn {
   padding: 8px 16px;
-  background-color: #007bff;
+  background-color: #4caf50;
   color: #fff;
   border: none;
   border-radius: 5px;
@@ -117,7 +117,7 @@
 }
 
 .check-btn:hover {
-  background-color: #0056b3;
+  background-color: #419643;
 }
 
 .error-text {

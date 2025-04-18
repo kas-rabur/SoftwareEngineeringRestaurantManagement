@@ -77,7 +77,22 @@ def get_table_availability():
 
     return jsonify({"tables": table_status}), 200
 
-    
+@app.route("/api/makeReservation")
+def make_res():
+    print("Received reservation request")
+    data = request.get_json()
+
+    user_id = data.get("user_id")
+    reservation_date = data.get("reservation_date")
+    reservation_time = data.get("reservation_time")
+    table_id = data.get("table_id")
+
+    result = dbLogic.create_reservation()
+    return jsonify({"message": result}), 200
+
+
+
+
 
 if __name__ == "__main__":
     app.run(debug=True, port=5000)
