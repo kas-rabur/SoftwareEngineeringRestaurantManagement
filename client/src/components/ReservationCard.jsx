@@ -1,59 +1,64 @@
 import "../styles/ReservationCard.css";
 import React, { useState } from "react";
+import { jwtDecode } from "jwt-decode";
 
 const ReservationCard = () => {
-    const [CustomerEmail, setCustomerEmail] = useState("");
     const [ReservationDate, setReservationDate] = useState("");
     const [ReservationTime, setReservationTime] = useState("");
     const [TableID, setTableID] = useState("");
 
+    const getEmailFromToken = () => {
+        const token = localStorage.getItem("token");
+        if (!token) return null;
+
+        try {
+            const decoded = jwtDecode(token);
+            return decoded.email;
+        } catch (err) {
+            console.error("Invalid token", err);
+            return null;
+        }
+    };
+
     const handleReservation = async () => {
-        if (!CustomerEmail || !ReservationDate || !ReservationTime || !TableID) {
-            alert("Please fill in all fields.");
+        const email = getEmailFromToken();
+        if (!email || !ReservationDate || !ReservationTime || !TableID) {
+            alert("Please fill in all fields and ensure you're logged in.");
             return;
         }
+
         try {
+
             const res = await fetch("http://localhost:5000/api/makeReservation", {
-              method: "POST",
-              headers: {
-                "Content-Type": "application/json",
-              },
-              body: JSON.stringify({
-                CustomerEmail,
-                ReservationDate,
-                ReservationTime,
-                TableID
-              }),              
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    ReservationDate,
+                    ReservationTime,
+                    TableID
+                }),
             });
-      
+
             const data = await res.json();
             if (res.ok) {
-              alert("Reservation successful!");
+                alert("Reservation successful!");
             } else {
-              alert("Error: " + data.message);
+                alert("Error: " + data.message);
             }
-          } catch (err) {
+        } catch (err) {
             console.error("Submission error:", err);
             alert("Failed to reserve.");
-          }
- 
-    }
+        }
+    };
+
     return (
         <div className="reservation-card" id="book-table">
             <h2>Make a Reservation</h2>
             <p>Reserve your table for a delightful dining experience.</p>
 
             <div className="reservation-form">
-                <label className="reservation-form-label">
-                    Customer Email:
-                    <input
-                        type="text"
-                        value={CustomerEmail}
-                        onChange={(e) => setCustomerEmail(e.target.value)}
-                        className="reservation-input-field"
-                    />
-                </label>
-
                 <label className="reservation-form-label">
                     Reservation Date:
                     <input
@@ -88,5 +93,6 @@ const ReservationCard = () => {
             </div>
         </div>
     );
-}
+};
+
 export default ReservationCard;

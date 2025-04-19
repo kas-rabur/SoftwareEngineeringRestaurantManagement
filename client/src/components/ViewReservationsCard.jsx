@@ -1,15 +1,30 @@
 import "../styles/ViewReservationsCard.css";
 import React, { useState } from "react";
+import { jwtDecode } from "jwt-decode";
+
+
 
 const ViewReservationsCard = () => {
     const [reservations, setReservations] = useState([]);
     const [loading, setLoading] = useState(false);
     const [errorMsg, setErrorMsg] = useState("");
-    const [customerEmail, setCustomerEmail] = useState("");
 
+    const getEmailFromToken = () => {
+        const token = localStorage.getItem("token");
+        if (!token) return null;
+
+        try {
+            const decoded = jwtDecode(token);
+            return decoded.email;
+        } catch (err) {
+            console.error("Invalid token", err);
+            return null;
+        }
+    };
     const handleViewReservations = async () => {
+        const customerEmail = getEmailFromToken();
         if (!customerEmail) {
-            setErrorMsg("Please enter your email.");
+            setErrorMsg("You must be logged in to view reservations.");
             return;
         }
 
@@ -18,6 +33,7 @@ const ViewReservationsCard = () => {
         setReservations([]);
 
         try {
+
             const response = await fetch("http://localhost:5000/api/getReservations", {
                 method: "POST", 
                 headers: { "Content-Type": "application/json" },
@@ -43,13 +59,6 @@ const ViewReservationsCard = () => {
             <h2>View Reservations</h2>
             <p>Check your existing reservations.</p>
 
-            <input
-                type="email"
-                placeholder="Enter your email"
-                value={customerEmail}
-                onChange={(e) => setCustomerEmail(e.target.value)}
-                className="email-input"
-            />
 
             <button onClick={handleViewReservations} className="view-reservations-button">
                 View Reservations
@@ -61,7 +70,7 @@ const ViewReservationsCard = () => {
                 <ul className="reservations-list">
                     {reservations.map((reservation, index) => (
                         <li key={index} className="reservation-item">
-                            {`Reservation for ${customerEmail} on ${reservation.reservation_date} at ${reservation.reservation_time} at table ${reservation.table_number}`}
+                            {`Reservation on ${reservation.reservation_date} at ${reservation.reservation_time} at table ${reservation.table_number}`}
                         </li>
                     ))}
                 </ul>
