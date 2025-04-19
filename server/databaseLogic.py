@@ -81,7 +81,7 @@ def make_reservation(customer_email, reservation_date, reservation_time, table_i
     conn.commit()
     conn.close()
 
-def getReservations(email):
+def get_reservations(email):
     conn = connect_db()
     cursor = conn.cursor()
 

@@ -93,14 +93,14 @@ def make_res():
 
 
 @app.route("/api/getReservations", methods=["POST"])
-def getReservations():
+def get_reservations():
     print("Received get reservations request")
 
     data = request.get_json()
     email = data.get("email")
     print(f"Email received: {email}")
 
-    result = dbLogic.getReservations(email)
+    result = dbLogic.get_reservations(email)
     print(f"Raw result: {result}")
 
     #convert tuples into list of dictionaries
@@ -117,8 +117,8 @@ def getReservations():
 
     
 @app.route("/api/getMenuItems", methods=["POST"])
-def getMenuItems():
-    items = dbLogic.getMenuItems()
+def get_menu_items():
+    items = dbLogic.get_menu_items()
     return jsonify({"items": items})
 
 
