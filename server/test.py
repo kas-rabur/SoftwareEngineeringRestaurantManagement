@@ -1,115 +1,26 @@
 import sqlite3
 
 def create_tables():
-
     conn = sqlite3.connect('database.db')
     cursor = conn.cursor()
 
     cursor.execute('''
-    CREATE TABLE IF NOT EXISTS Person (
-        id INTEGER PRIMARY KEY AUTOINCREMENT,
-        name TEXT,
-        contact TEXT,
-        address TEXT,
-        email TEXT
-    )''')
-
-    cursor.execute('''
-    CREATE TABLE IF NOT EXISTS Customer (
-        customer_id INTEGER PRIMARY KEY AUTOINCREMENT,
-        person_id INTEGER,
-        FOREIGN KEY (person_id) REFERENCES Person (id)
-    )''')
-
-    cursor.execute('''
-    CREATE TABLE IF NOT EXISTS Employee (
-        employee_id INTEGER PRIMARY KEY AUTOINCREMENT,
-        person_id INTEGER,
-        schedule TEXT,
-        hours_worked INTEGER,
-        current_task TEXT,
-        FOREIGN KEY (person_id) REFERENCES Person (id)
-    )''')
-
-    cursor.execute('''
-    CREATE TABLE IF NOT EXISTS Waiter (
-        waiter_id INTEGER PRIMARY KEY AUTOINCREMENT,
-        employee_id INTEGER,
-        FOREIGN KEY (employee_id) REFERENCES Employee (employee_id)
-    )''')
-
-    cursor.execute('''
-    CREATE TABLE IF NOT EXISTS KitchenStaff (
-        kitchen_staff_id INTEGER PRIMARY KEY AUTOINCREMENT,
-        employee_id INTEGER,
-        FOREIGN KEY (employee_id) REFERENCES Employee (employee_id)
-    )''')
-
-    cursor.execute('''
-    CREATE TABLE IF NOT EXISTS Reservations (
-        reservation_id INTEGER PRIMARY KEY AUTOINCREMENT,
-        customer_id INTEGER,
-        reservation_date TEXT,
-        reservation_time TEXT,
-        table_number INTEGER,
-        status TEXT,
-        FOREIGN KEY (customer_id) REFERENCES Customer (customer_id)
-    )''')
-
-    cursor.execute('''
-    CREATE TABLE IF NOT EXISTS Orders (
-        order_id INTEGER PRIMARY KEY AUTOINCREMENT,
-        customer_id INTEGER,
-        table_number INTEGER,
-        items TEXT,
-        total_amount REAL,
-        status TEXT,
-        FOREIGN KEY (customer_id) REFERENCES Customer (customer_id)
-    )''')
-
-    cursor.execute('''
-    CREATE TABLE IF NOT EXISTS Inventory (
-        item_id INTEGER PRIMARY KEY AUTOINCREMENT,
-        item_name TEXT,
-        quantity INTEGER,
-        unit TEXT,
-        price REAL,
-        restock_threshold INTEGER,
-        category TEXT
-    )''')
-
-    cursor.execute('''
-    CREATE TABLE IF NOT EXISTS Menu (
-        menu_id INTEGER PRIMARY KEY AUTOINCREMENT,
-        item_name TEXT,
-        description TEXT,
-        price REAL,
-        category TEXT,
-        availability_status INTEGER
-    )''')
-
-    cursor.execute('''
-    CREATE TABLE IF NOT EXISTS Payment (
-        payment_id INTEGER PRIMARY KEY AUTOINCREMENT,
-        customer_id INTEGER,
-        order_id INTEGER,
-        amount REAL,
-        payment_method TEXT,
-        status TEXT,
-        FOREIGN KEY (customer_id) REFERENCES Customer (customer_id),
-        FOREIGN KEY (order_id) REFERENCES Orders (order_id)
-    )''')
-
-    cursor.execute('''
-    CREATE TABLE IF NOT EXISTS TableInfo (
-        table_id INTEGER PRIMARY KEY AUTOINCREMENT,
-        capacity INTEGER,
-        status TEXT
-    )''')
+        INSERT INTO Menu (item_name, description, price, category, availability_status) VALUES
+            ('Margherita Pizza', 'Classic cheese and tomato pizza with fresh basil.', 8.99, 'Main', 1),
+            ('Pepperoni Pizza', 'Spicy pepperoni with mozzarella and tomato sauce.', 9.99, 'Main', 1),
+            ('Garlic Bread', 'Toasted bread with garlic butter.', 3.99, 'Starter', 1),
+            ('Caesar Salad', 'Fresh romaine lettuce with Caesar dressing and croutons.', 5.99, 'Starter', 1),
+            ('Chocolate Lava Cake', 'Warm chocolate cake with a gooey center.', 4.99, 'Dessert', 1),
+            ('Tiramisu', 'Layered Italian dessert with coffee-soaked biscuits.', 5.49, 'Dessert', 1),
+            ('Lemonade', 'Refreshing homemade lemonade.', 2.49, 'Drinks', 1),
+            ('Espresso', 'Strong Italian-style coffee shot.', 1.99, 'Drinks', 1),
+            ('Fish & Chips', 'Golden fried cod with chunky fries.', 10.49, 'Main', 0),
+            ('Chicken Wings', 'Spicy grilled chicken wings.', 6.99, 'Starter', 1)
+    ''')
 
     conn.commit()
     conn.close()
-    print("Tables created successfully!")
+    print("Tables populated successfully!")
 
 def main():
     create_tables()
