@@ -82,16 +82,42 @@ def make_res():
     print("Received reservation request")
     data = request.get_json()
 
-    user_id = data.get("CustomerID")
+    customer_email = data.get("CustomerEmail")
     reservation_date = data.get("ReservationDate")
     reservation_time = data.get("ReservationTime")
     table_id = data.get("TableID")
 
-    result = dbLogic.create_reservation(user_id, reservation_date, reservation_time, table_id, "confirmed")
+    result = dbLogic.create_reservation(customer_email, reservation_date, reservation_time, table_id, "confirmed")
 
     return jsonify({"message": result}), 200
 
 
+from flask import jsonify, request
+
+@app.route("/api/getReservations", methods=["POST"])
+def getReservations():
+    print("Received get reservations request")
+
+    data = request.get_json()
+    email = data.get("email")
+    print(f"Email received: {email}")
+
+    result = dbLogic.getReservations(email)
+    print(f"Raw result: {result}")
+
+    #convert tuples into list of dictionaries
+    reservations = [
+        {
+            "reservation_date": row[0],
+            "reservation_time": row[1],
+            "table_number": row[2]
+        }
+        for row in result
+    ]
+
+    return jsonify({"reservations": reservations})
+
+    
 
 
 

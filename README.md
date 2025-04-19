@@ -2,6 +2,7 @@
 
 TODO:
 
-- JWT tokens and protected routes
-- password encryption and decryption 
-- make sure all current items are fully finished and working before starting customer dashboard
+- password encryption/ decryption
+- ViewReservations add a check to see if user email exists in database before making reservation
+- MakeReservation make customer email auto fill using jwt session token
+- MakeReservation add check to see if table is available at the time before processing reservation

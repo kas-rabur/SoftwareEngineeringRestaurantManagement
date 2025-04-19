@@ -4,13 +4,13 @@ import sqlite3
 def connect_db():
     return sqlite3.connect('database.db')
 
-def create_reservation(customer_id, date, time, table_number, status):
+def create_reservation(customer_email, date, time, table_number, status):
     conn = connect_db()
     cursor = conn.cursor()
     cursor.execute('''
-        INSERT INTO Reservations (customer_id, reservation_date, reservation_time, table_id, status)
+        INSERT INTO Reservations (customer_email, reservation_date, reservation_time, table_id, status)
         VALUES (?, ?, ?, ?, ?)
-    ''', (customer_id, date, time, table_number, status))
+    ''', (customer_email, date, time, table_number, status))
     conn.commit()
     conn.close()
 
@@ -69,14 +69,33 @@ def get_all_tables_with_status(date, time):
         for table in tables
     ]
 
-def make_reservation(customer_id, reservation_date, reservation_time, table_id):
+def make_reservation(customer_email, reservation_date, reservation_time, table_id):
     conn = connect_db()
     cursor = conn.cursor()
 
     cursor.execute('''
-        INSERT INTO Reservation (customer_id, reservation_date, reservation_time, table_id, status) 
+        INSERT INTO Reservation (customer_email, reservation_date, reservation_time, table_id, status) 
         VALUES (?, ?, ?, ?, ?)
-''', (customer_id, reservation_date, reservation_time, table_id, "confirmed"))
+''', (customer_email, reservation_date, reservation_time, table_id, "confirmed"))
     
     conn.commit()
     conn.close()
+
+def getReservations(email):
+    conn = connect_db()
+    cursor = conn.cursor()
+
+    cursor.execute('''
+        SELECT reservation_date, reservation_time, table_id
+        FROM Reservations
+        WHERE customer_email = (?)
+    ''', (email,)) 
+
+    reservations = cursor.fetchall()
+
+    cursor.close()
+    conn.close()
+    
+    return reservations
+
+

@@ -2,13 +2,13 @@ import "../styles/ReservationCard.css";
 import React, { useState } from "react";
 
 const ReservationCard = () => {
-    const [CustomerID, setCustomerID] = useState("");
+    const [CustomerEmail, setCustomerEmail] = useState("");
     const [ReservationDate, setReservationDate] = useState("");
     const [ReservationTime, setReservationTime] = useState("");
     const [TableID, setTableID] = useState("");
 
     const handleReservation = async () => {
-        if (!CustomerID || !ReservationDate || !ReservationTime || !TableID) {
+        if (!CustomerEmail || !ReservationDate || !ReservationTime || !TableID) {
             alert("Please fill in all fields.");
             return;
         }
@@ -19,7 +19,7 @@ const ReservationCard = () => {
                 "Content-Type": "application/json",
               },
               body: JSON.stringify({
-                CustomerID,
+                CustomerEmail,
                 ReservationDate,
                 ReservationTime,
                 TableID
@@ -45,11 +45,11 @@ const ReservationCard = () => {
 
             <div className="reservation-form">
                 <label className="reservation-form-label">
-                    Customer ID:
+                    Customer Email:
                     <input
                         type="text"
-                        value={CustomerID}
-                        onChange={(e) => setCustomerID(e.target.value)}
+                        value={CustomerEmail}
+                        onChange={(e) => setCustomerEmail(e.target.value)}
                         className="reservation-input-field"
                     />
                 </label>
