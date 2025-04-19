@@ -7,6 +7,8 @@
     text-align: center;
     max-width: 500px;
     margin: 0 auto;
+    width: 500px;
+    height: 500px;
   }
   
   .view-reservations-card:hover {
@@ -71,17 +73,5 @@
     margin-top: 10px;
   }
   
-  @media (max-width: 600px) {
-    .view-reservations-card {
-      padding: 15px;
-    }
-  
-    .email-input {
-      font-size: 0.85rem;
-    }
-  
-    .reservation-item {
-      font-size: 0.85rem;
-    }
-  }
+
   

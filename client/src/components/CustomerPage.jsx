@@ -21,10 +21,6 @@ const CustomerPage = () => {
         <ViewReservationsCard></ViewReservationsCard>
         <MenuItemsCard></MenuItemsCard>
 
-        <div className="card-customer" id="order-food">
-          <h2>Order Food</h2>
-          <p>Browse our menu and order your favorite dishes directly.</p>
-        </div>
       </div>
     </div>
   );

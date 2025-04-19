@@ -34,7 +34,7 @@ const MenuItemsCard = () => {
 
     return (
         <div className="menu-items-card" id="order-food">
-            <h2>Order Food</h2>
+            <h2>Menu</h2>
             <p>Browse our menu and order your favorite dishes directly.</p>
             <button onClick={fetchMenuItems} className="fetch-menu-button">Fetch Menu Items</button>
 
