@@ -1,7 +1,7 @@
 import React from "react";
 import "../styles/CustomerPage.css";
 import CheckAvailabilityCard from "../components/CheckAvailabilityCard";
-
+import ReservationCard from "../components/ReservationCard";
 
 const CustomerPage = () => {
 
@@ -15,10 +15,7 @@ const CustomerPage = () => {
       <div className="dashboard-cards">
         
         <CheckAvailabilityCard></CheckAvailabilityCard>
-        <div className="card-customer" id="make-reservation">
-          <h2>Make Reservation</h2>
-          <p>Plan your special occasions and events with us.</p>
-        </div>
+        <ReservationCard></ReservationCard>
 
         <div className="card-customer" id="view-reservation">
           <h2>View Reservation</h2>

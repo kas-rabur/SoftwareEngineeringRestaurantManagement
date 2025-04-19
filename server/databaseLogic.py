@@ -8,7 +8,7 @@ def create_reservation(customer_id, date, time, table_number, status):
     conn = connect_db()
     cursor = conn.cursor()
     cursor.execute('''
-        INSERT INTO Reservations (customer_id, reservation_date, reservation_time, table_number, status)
+        INSERT INTO Reservations (customer_id, reservation_date, reservation_time, table_id, status)
         VALUES (?, ?, ?, ?, ?)
     ''', (customer_id, date, time, table_number, status))
     conn.commit()

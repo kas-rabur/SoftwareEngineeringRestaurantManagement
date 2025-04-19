@@ -77,17 +77,18 @@ def get_table_availability():
 
     return jsonify({"tables": table_status}), 200
 
-@app.route("/api/makeReservation")
+@app.route("/api/makeReservation", methods=["POST"])
 def make_res():
     print("Received reservation request")
     data = request.get_json()
 
-    user_id = data.get("user_id")
-    reservation_date = data.get("reservation_date")
-    reservation_time = data.get("reservation_time")
-    table_id = data.get("table_id")
+    user_id = data.get("CustomerID")
+    reservation_date = data.get("ReservationDate")
+    reservation_time = data.get("ReservationTime")
+    table_id = data.get("TableID")
 
-    result = dbLogic.create_reservation()
+    result = dbLogic.create_reservation(user_id, reservation_date, reservation_time, table_id, "confirmed")
+
     return jsonify({"message": result}), 200
 
 
