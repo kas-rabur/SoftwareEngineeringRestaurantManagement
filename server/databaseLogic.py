@@ -98,4 +98,19 @@ def getReservations(email):
     
     return reservations
 
+def getMenuItems():
+    conn = connect_db()
+    conn.row_factory = sqlite3.Row 
+    cursor = conn.cursor()
+
+    cursor.execute('SELECT * FROM Menu')
+    rows = cursor.fetchall()
+
+    #convert to list of dictionaries
+    items = [dict(row) for row in rows]
+
+    cursor.close()
+    conn.close()
+    return items
+
 

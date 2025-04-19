@@ -92,8 +92,6 @@ def make_res():
     return jsonify({"message": result}), 200
 
 
-from flask import jsonify, request
-
 @app.route("/api/getReservations", methods=["POST"])
 def getReservations():
     print("Received get reservations request")
@@ -118,6 +116,11 @@ def getReservations():
     return jsonify({"reservations": reservations})
 
     
+@app.route("/api/getMenuItems", methods=["POST"])
+def getMenuItems():
+    items = dbLogic.getMenuItems()
+    return jsonify({"items": items})
+
 
 
 

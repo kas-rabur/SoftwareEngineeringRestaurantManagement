@@ -3,6 +3,7 @@ import "../styles/CustomerPage.css";
 import CheckAvailabilityCard from "../components/CheckAvailabilityCard";
 import ReservationCard from "../components/ReservationCard";
 import ViewReservationsCard from "../components/ViewReservationsCard";
+import MenuItemsCard from "../components/MenuItemsCard";
 
 const CustomerPage = () => {
 
@@ -18,6 +19,7 @@ const CustomerPage = () => {
         <CheckAvailabilityCard></CheckAvailabilityCard>
         <ReservationCard></ReservationCard>
         <ViewReservationsCard></ViewReservationsCard>
+        <MenuItemsCard></MenuItemsCard>
 
         <div className="card-customer" id="order-food">
           <h2>Order Food</h2>
