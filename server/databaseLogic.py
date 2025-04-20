@@ -70,16 +70,29 @@ def get_all_tables_with_status(date, time):
     ]
 
 def make_reservation(customer_email, reservation_date, reservation_time, table_id):
+    print(f"Making reservation for {customer_email} on {reservation_date} at {reservation_time} for table {table_id}")
+    available_tables = get_all_tables_with_status(reservation_date, reservation_time)
+    available_table_ids = [table['table_id'] for table in available_tables if table['available']]
+
+    if table_id not in available_table_ids:
+        return f"Table {table_id} is already reserved at {reservation_date} {reservation_time}."
+
     conn = connect_db()
     cursor = conn.cursor()
+    try:
+        cursor.execute('''
+            INSERT INTO Reservations (customer_email, reservation_date, reservation_time, table_id, status) 
+            VALUES (?, ?, ?, ?, ?)
+        ''', (customer_email, reservation_date, reservation_time, table_id, "confirmed"))
 
-    cursor.execute('''
-        INSERT INTO Reservation (customer_email, reservation_date, reservation_time, table_id, status) 
-        VALUES (?, ?, ?, ?, ?)
-''', (customer_email, reservation_date, reservation_time, table_id, "confirmed"))
+        return "Reservation successful"
+    except:
+        return "Reservation already exists"
+    finally:
+        conn.commit()
+        conn.close()
+
     
-    conn.commit()
-    conn.close()
 
 def get_reservations(email):
     conn = connect_db()
@@ -98,7 +111,7 @@ def get_reservations(email):
     
     return reservations
 
-def getMenuItems():
+def get_menu_items():
     conn = connect_db()
     conn.row_factory = sqlite3.Row 
     cursor = conn.cursor()
