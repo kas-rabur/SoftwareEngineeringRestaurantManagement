@@ -98,7 +98,7 @@ def get_reservations(email):
     
     return reservations
 
-def getMenuItems():
+def get_menu_items():
     conn = connect_db()
     conn.row_factory = sqlite3.Row 
     cursor = conn.cursor()

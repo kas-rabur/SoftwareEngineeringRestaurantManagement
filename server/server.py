@@ -82,13 +82,23 @@ def make_res():
     print("Received reservation request")
     data = request.get_json()
 
-    customer_email = data.get("CustomerEmail")
+    customer_email = request.headers.get('email')
     reservation_date = data.get("ReservationDate")
     reservation_time = data.get("ReservationTime")
     table_id = data.get("TableID")
 
-    result = dbLogic.create_reservation(customer_email, reservation_date, reservation_time, table_id, "confirmed")
+    
+    tables = dbLogic.get_all_tables_with_status(reservation_date, reservation_time)
+    selected_table = next((t for t in tables if str(t['table_id']) == str(table_id)), None)
+    print(f"Selected table: {selected_table}")
 
+    if not selected_table:
+        return jsonify({"message": "Table not found"}), 404
+
+    if selected_table['available'] != True:
+        return jsonify({"message": f"Table {table_id} is not available at that time"}), 409
+
+    result = dbLogic.create_reservation(customer_email, reservation_date, reservation_time, table_id, "confirmed")
     return jsonify({"message": result}), 200
 
 

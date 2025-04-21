@@ -33,6 +33,7 @@ const ReservationCard = () => {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
+                    "email": email,
                 },
                 body: JSON.stringify({
                     ReservationDate,
