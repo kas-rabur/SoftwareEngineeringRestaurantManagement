@@ -8,6 +8,8 @@
     color: #fff;
     padding: 1rem 2rem;
     font-family: 'Poppins', sans-serif;
+    position: sticky;
+    top: 0;
   }
   
   .navbar-logo {
