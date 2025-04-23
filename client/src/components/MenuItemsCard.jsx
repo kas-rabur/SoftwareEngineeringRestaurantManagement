@@ -1,7 +1,7 @@
 import "../styles/MenuItemsCard.css";
 import React, { useState } from "react";
 
-const MenuItemsCard = () => {
+const MenuItemsCard = ({ showAddButton = false, onAddItem }) => {
     const [menuItems, setMenuItems] = useState([]);
     const [loading, setLoading] = useState(false);
     const [errorMsg, setErrorMsg] = useState("");
@@ -47,18 +47,25 @@ const MenuItemsCard = () => {
             <ul className="menu-items-list">
             {menuItems.length > 0 ? (
                 menuItems
-                .filter(item => item.availability_status === 1)
-                .map(item => (
+                    .filter(item => item.availability_status === 1)
+                    .map(item => (
                     <li key={item.menu_id} className="menu-item">
-                    <h3>{item.item_name}</h3>
-                    <p>{item.description}</p>
-                    <p>Category: {item.category}</p>
-                    <p>£{item.price.toFixed(2)}</p>
+                        <h3>{item.item_name}</h3>
+                        <p>{item.description}</p>
+                        <p>Category: {item.category}</p>
+                        <p>£{item.price.toFixed(2)}</p>
+                        {showAddButton && (
+                            <button className="add-button" onClick={() => onAddItem(item)}>
+                                Add
+                            </button>
+                        )}
+
                     </li>
-                ))
-            ) : (
+                    ))
+                ) : (
                 !loading && <p>No menu items to show.</p>
-            )}
+                )}
+
             </ul>
 
 

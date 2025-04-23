@@ -12,7 +12,7 @@
   }
   
   .menu-items-card:hover {
-    transform: translateY(-5px);
+
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
   }
   
@@ -67,7 +67,8 @@
     box-shadow: 0 2px 5px rgba(0,0,0,0.1);
     transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
     flex: 1 1 200px;
-    max-width: 250px;
+    max-width: 150px;
+    min-width: 150px;
     text-align: center;
   }
   
@@ -88,6 +89,25 @@
     margin: 4px 0;
     font-size: 0.9rem;
     color: #444;
+    justify-content: space-between;
+   
   }
+
+  .add-button {
+    padding: 8px 16px;
+    background-color: #4caf50;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-bottom: 15px;
+    font-size: 0.95rem;
+    transition: background-color 0.2s ease-in-out;
+  }
+  
+  .add-button:hover {
+    background-color: #419643;
+  }
+
 
   

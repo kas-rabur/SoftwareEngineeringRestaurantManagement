@@ -22,7 +22,7 @@ const CustomerPage = () => {
         <CheckAvailabilityCard />
         <ReservationCard />
         <ViewReservationsCard />
-        <MenuItemsCard />
+        <MenuItemsCard showAddButton={false} />
       </div>
     </div>
   );
