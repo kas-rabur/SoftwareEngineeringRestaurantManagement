@@ -32,8 +32,17 @@ function LoginForm() {
         alert("Login successful!");
 
         localStorage.setItem("token", data.token);
-        navigate("/customer"); 
-      } else {
+        localStorage.setItem("role", data.role);
+        const role = localStorage.getItem("role");
+
+        if (role === "customer") {
+          navigate("/customer");
+        }
+        else if (role === "staff") {
+          navigate("/staff");
+        }
+      } 
+      else {
         alert("Error: " + data.message);
       }
     } catch (err) {

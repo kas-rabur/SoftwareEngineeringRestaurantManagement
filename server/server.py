@@ -21,11 +21,12 @@ def verify_token():
 
     try:
         payload = jwt.decode(token, secret_key, algorithms=["HS256"])
-        return payload, None, None
+        return payload, None, None  
     except jwt.ExpiredSignatureError:
         return None, jsonify({"message": "Token expired"}), 401
     except jwt.InvalidTokenError:
         return None, jsonify({"message": "Invalid token"}), 401
+
     
 #register route 
 @app.route("/api/register", methods=["POST"])
@@ -47,26 +48,26 @@ def register_user():
 #login route
 @app.route("/api/login", methods=["POST"])
 def login_user():
-    print("Received login request")
     data = request.get_json()
-
     email = data.get("email") 
     password = data.get("password")
-    print(f"Logging in user: {email}")
 
-    result = dbLogic.login_customer(email, password)
-
-    if result == "Login successful":
-        #generates HTW token lasting 1 hour alllowing access to protected routes eg, the customer dashboard
+    user = dbLogic.login_user(email, password)  
+    if user:
         payload = {
-            "email": email,
+            "email": user["email"],
+            "role": user["role"],
             "exp": datetime.datetime.now(datetime.UTC) + datetime.timedelta(hours=1)
         }
         token = jwt.encode(payload, secret_key, algorithm="HS256")
-        return jsonify({"message": "Login successful", "token": token}), 200
+        return jsonify({
+            "message": "Login successful", 
+            "token": token,
+            "role": user["role"]  
+        }), 200
     else:
-        return jsonify({"message": result}), 401
-
+        return jsonify({"message": "Invalid email or password"}), 401
+    
 @app.route("/api/getTableAvailability", methods=["POST"])
 def get_table_availability():
     data = request.get_json()

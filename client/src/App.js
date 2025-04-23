@@ -6,6 +6,7 @@ import CustomerPage from "./components/CustomerPage";
 import LoginPage from "./components/LoginPage";
 import RegisterPage from "./components/RegisterPage";
 import ProtectedRoutes from "./components/ProtectedRoutes";
+import StaffPage from "./components/StaffPage";
 import { isTokenValid } from "./utils/auth";
 import { useLocation } from "react-router-dom";
 
@@ -30,11 +31,15 @@ const AppWrapper = () => {
       <Routes>
         <Route path="/home" element={<HomePage />} />
         <Route path="/customer" element={
-          <ProtectedRoutes>
+          <ProtectedRoutes allowedRoles={["customer"]}>
             <CustomerPage />
           </ProtectedRoutes>
         } />
-        <Route path="/staff" element={<div>Staff Page</div>} />
+        <Route path ="/staff" element={
+          <ProtectedRoutes allowedRoles={["staff"]}>
+            <StaffPage />
+          </ProtectedRoutes>
+        } />
         <Route path="/management" element={<div>Management Page</div>} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/register" element={<RegisterPage />} />

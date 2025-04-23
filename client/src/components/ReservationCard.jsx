@@ -28,12 +28,13 @@ const ReservationCard = () => {
         }
 
         try {
-
+            const token = localStorage.getItem("token");
             const res = await fetch("http://localhost:5000/api/makeReservation", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
                     "email": email,
+                    "Authorization": `Bearer ${token}`,
                 },
                 body: JSON.stringify({
                     ReservationDate,

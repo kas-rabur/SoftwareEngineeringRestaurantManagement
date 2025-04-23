@@ -18,11 +18,12 @@ def create_reservation(customer_email, date, time, table_number, status):
 def register_customer(name, contact, email, password):
     conn = connect_db()
     cursor = conn.cursor()
+    role = "customer"  # default role for new users
     try:
         cursor.execute('''
-            INSERT INTO Person (name, contact, email, password)
-            VALUES (?, ?, ?, ?)
-        ''', (name, contact, email, password))
+            INSERT INTO Person (name, contact, email, password, role)
+            VALUES (?, ?, ?, ?, ?)
+        ''', (name, contact, email, password, role))
         conn.commit()
         return "User registered successfully"
     except sqlite3.IntegrityError:
@@ -30,19 +31,26 @@ def register_customer(name, contact, email, password):
     finally:
         conn.close()
 
-def login_customer(email, password):
+def login_user(email, password):
     conn = connect_db()
+    conn.row_factory = sqlite3.Row  
     cursor = conn.cursor()
+
     cursor.execute('''
         SELECT * FROM Person WHERE email = ? AND password = ?
     ''', (email, password))
     user = cursor.fetchone()
     conn.close()
-    
+
     if user:
-        return "Login successful"
+        return {
+            "id": user["id"],
+            "name": user["name"],
+            "email": user["email"],
+            "role": user["role"]
+        }
     else:
-        return "Invalid email or password"
+        return None
 
 def get_all_tables_with_status(date, time):
     conn = connect_db()
