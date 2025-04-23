@@ -35,7 +35,7 @@ function LoginForm() {
         localStorage.setItem("role", data.role);
         const role = localStorage.getItem("role");
 
-        if (role === "customer") {
+        if (role === "user") {
           navigate("/customer");
         } else if (role === "staff") {
           navigate("/staff");

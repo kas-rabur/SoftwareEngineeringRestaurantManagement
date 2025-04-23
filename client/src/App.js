@@ -31,7 +31,7 @@ const AppWrapper = () => {
       <Routes>
         <Route path="/home" element={<HomePage />} />
         <Route path="/customer" element={
-          <ProtectedRoutes allowedRoles={["customer"]}>
+          <ProtectedRoutes allowedRoles={["user"]}>
             <CustomerPage />
           </ProtectedRoutes>
         } />
