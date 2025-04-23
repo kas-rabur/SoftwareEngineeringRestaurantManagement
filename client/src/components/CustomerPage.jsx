@@ -13,8 +13,9 @@ const CustomerPage = () => {
         <p>
           Select an action from the dashboard below.
           <br />
-          <strong>Note:</strong> Reservations are for a <strong>1-hour time slot</strong>. 
-          Food orders will be handled on the day by our <strong>catering team</strong>.
+          <strong>Note:</strong> Reservations are for a{" "}
+          <strong>1-hour time slot</strong>. Food orders will be handled on the
+          day by our <strong>catering team</strong>.
         </p>
       </header>
 

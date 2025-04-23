@@ -14,7 +14,7 @@ function RegisterForm() {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData(prev => ({ ...prev, [name]: value }));
+    setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
   const handleSubmit = async (e) => {
@@ -37,7 +37,7 @@ function RegisterForm() {
       const data = await res.json();
       if (res.ok) {
         alert("Registration successful!");
-        navigate("/login"); 
+        navigate("/login");
       } else {
         alert("Error: " + data.message);
       }
@@ -53,23 +53,55 @@ function RegisterForm() {
         <h2>Create Your Account</h2>
         <div className="form-group">
           <label>Username</label>
-          <input type="text" name="username" value={formData.username} onChange={handleChange} required />
+          <input
+            type="text"
+            name="username"
+            value={formData.username}
+            onChange={handleChange}
+            required
+          />
 
           <label>Contact Number</label>
-          <input type="text" name="contact" value={formData.contact} onChange={handleChange} required />
+          <input
+            type="text"
+            name="contact"
+            value={formData.contact}
+            onChange={handleChange}
+            required
+          />
 
           <label>Email</label>
-          <input type="email" name="email" value={formData.email} onChange={handleChange} required />
+          <input
+            type="email"
+            name="email"
+            value={formData.email}
+            onChange={handleChange}
+            required
+          />
 
           <label>Password</label>
-          <input type="password" name="password" value={formData.password} onChange={handleChange} required />
+          <input
+            type="password"
+            name="password"
+            value={formData.password}
+            onChange={handleChange}
+            required
+          />
 
           <label>Confirm Password</label>
-          <input type="password" name="confirmPassword" value={formData.confirmPassword} onChange={handleChange} required />
+          <input
+            type="password"
+            name="confirmPassword"
+            value={formData.confirmPassword}
+            onChange={handleChange}
+            required
+          />
         </div>
 
         <div className="register-container">
-          <button className="register-button" type="submit">Register</button>
+          <button className="register-button" type="submit">
+            Register
+          </button>
         </div>
       </form>
     </div>

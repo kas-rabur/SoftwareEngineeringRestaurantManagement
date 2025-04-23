@@ -12,12 +12,12 @@ function LoginForm() {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData(prev => ({ ...prev, [name]: value }));
+    setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-  
+
     try {
       const res = await fetch("http://localhost:5000/api/login", {
         method: "POST",
@@ -26,7 +26,7 @@ function LoginForm() {
         },
         body: JSON.stringify(formData),
       });
-  
+
       const data = await res.json();
       if (res.ok) {
         alert("Login successful!");
@@ -37,12 +37,10 @@ function LoginForm() {
 
         if (role === "customer") {
           navigate("/customer");
-        }
-        else if (role === "staff") {
+        } else if (role === "staff") {
           navigate("/staff");
         }
-      } 
-      else {
+      } else {
         alert("Error: " + data.message);
       }
     } catch (err) {
@@ -50,7 +48,6 @@ function LoginForm() {
       alert("Failed to login.");
     }
   };
-  
 
   return (
     <div className="login-box">
@@ -81,17 +78,28 @@ function LoginForm() {
         </div>
 
         <div className="check-remember">
-          <input className="tick-box" type="checkbox" id="remember" name="remember" />
+          <input
+            className="tick-box"
+            type="checkbox"
+            id="remember"
+            name="remember"
+          />
           <label htmlFor="remember">Remember me</label>
-          <button type="button" className="forgot-password">Forgot Password</button>
+          <button type="button" className="forgot-password">
+            Forgot Password
+          </button>
         </div>
 
         <div className="login-container">
-          <button className="login-button" type="submit">Login</button>
+          <button className="login-button" type="submit">
+            Login
+          </button>
         </div>
 
         <div className="register-container">
-          <p>Don't have an account? <a href="/register">Register</a></p>
+          <p>
+            Don't have an account? <a href="/register">Register</a>
+          </p>
         </div>
       </form>
     </div>
