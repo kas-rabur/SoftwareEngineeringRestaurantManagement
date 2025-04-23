@@ -60,8 +60,8 @@
   
   .menu-item {
     background-color: #eef2f5;
-    border-radius: 8px;    
-    padding: 20px;        
+    border-radius: 8px;
+    padding: 20px;
     font-size: 0.9rem;
     color: #333;
     box-shadow: 0 2px 5px rgba(0,0,0,0.1);
@@ -70,7 +70,13 @@
     max-width: 150px;
     min-width: 150px;
     text-align: center;
-  }
+
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 220px; 
+}
+
   
 
   .menu-item:hover {
