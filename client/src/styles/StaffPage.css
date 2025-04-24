@@ -99,3 +99,21 @@
     background-color: #ddd;
     font-size: 1rem;
 }
+.order-button {
+    padding: 8px 16px;
+    background-color: #4caf50;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 0.95rem;
+    transition: background-color 0.2s ease-in-out;
+    margin-top: 10px;
+    width: 25%;
+    padding: 15px;
+    
+
+}
+.order-button:hover {
+    background-color: #419643;
+  }

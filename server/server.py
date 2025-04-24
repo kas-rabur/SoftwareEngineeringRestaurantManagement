@@ -142,6 +142,30 @@ def get_table_numbers():
     tables = dbLogic.get_table_numbers()
     return jsonify({"tables": tables})
 
+@app.route("/api/makeOrder", methods=["POST"])
+def make_order():
+    try:
+        data = request.get_json()
+        email = data.get("email")
+        table_id = data.get("table_id")
+        items = data.get("items")
+        amount = data.get("amount")
+        order_date = data.get("order_date")
+        order_time = data.get("order_time")
 
+        result = dbLogic.make_order(email, table_id, items, amount, order_date, order_time)
+
+        if result.startswith("Error"):
+            return jsonify({"message": result}), 500
+
+        return jsonify({"message": result}), 200
+
+    except Exception as e:
+        print(f"Server error during make_order: {e}")
+        return jsonify({"message": "Internal server error"}), 500
+
+    
+    
+    
 if __name__ == "__main__":
     app.run(debug=True, port=5000)

@@ -138,3 +138,23 @@ def get_table_numbers():
     print(tables)
     conn.close()
     return tables
+
+def make_order(email, table_id, items, amount, order_date, order_time):
+    try:
+        conn = connect_db()
+        cursor = conn.cursor()
+        status = "pending"
+        rounded_amount = round(amount, 2)
+
+        cursor.execute('''
+            INSERT INTO Orders (email, table_number, items, total_amount, status, order_date, order_time) 
+            VALUES (?, ?, ?, ?, ?, ?, ?)
+        ''', (email, table_id, items, rounded_amount, status, order_date, order_time))
+
+        conn.commit()
+        return "Order placed successfully"
+    except Exception as e:
+        print(f"Database error during make_order: {e}")
+        return f"Error placing order: {str(e)}"
+    finally:
+        conn.close()
