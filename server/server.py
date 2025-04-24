@@ -132,7 +132,15 @@ def get_menu_items():
     items = dbLogic.get_menu_items()
     return jsonify({"items": items})
 
+@app.route("/api/getCustomerEmails", methods=["GET"])
+def get_customer_emails():
+    emails = dbLogic.get_customer_emails()
+    return jsonify({"emails": emails})
 
+@app.route("/api/getTableNumbers", methods=["GET"])
+def get_table_numbers():
+    tables = dbLogic.get_table_numbers()
+    return jsonify({"tables": tables})
 
 
 if __name__ == "__main__":

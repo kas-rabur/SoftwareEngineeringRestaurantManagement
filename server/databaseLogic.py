@@ -121,4 +121,20 @@ def get_menu_items():
     conn.close()
     return items
 
+def get_customer_emails():
+    conn = connect_db()
+    cursor = conn.cursor()
+    cursor.execute("SELECT email FROM Person WHERE role = 'user'")
+    emails = [row[0] for row in cursor.fetchall()]
+    print(f"customer emails: {emails}")
+    conn.close()
+    return emails
 
+def get_table_numbers():
+    conn = connect_db()
+    cursor = conn.cursor()
+    cursor.execute("SELECT table_id FROM TableInfo")
+    tables = [row[0] for row in cursor.fetchall()]
+    print(tables)
+    conn.close()
+    return tables
