@@ -106,6 +106,14 @@ def get_reservations(email):
     conn.close()
     return reservations
 
+def get_all_reservations():
+    conn = connect_db()
+    cursor = conn.cursor()
+    cursor.execute("SELECT * FROM Reservations")
+    reservations = cursor.fetchall()
+    conn.close()
+    return reservations
+
 def get_menu_items():
     conn = connect_db()
     conn.row_factory = sqlite3.Row

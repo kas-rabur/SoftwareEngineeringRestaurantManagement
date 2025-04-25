@@ -126,7 +126,27 @@ def get_reservations():
 
     return jsonify({"reservations": reservations})
 
-    
+@app.route("/api/getAllReservations", methods=["GET"])
+def get_all_reservations():
+    print("Received get all reservations request")
+    result = dbLogic.get_all_reservations()
+    print(f"Raw result: {result}")
+
+    reservations = [
+        {
+            "reservation_id": row[0],
+            "customer_email": row[1],
+            "reservation_date": row[2],
+            "reservation_time": row[3],
+            "table_id": row[4],
+            "status": row[5]
+        }
+        for row in result
+    ]
+
+    return jsonify({"reservations": reservations})
+
+ 
 @app.route("/api/getMenuItems", methods=["POST"])
 def get_menu_items():
     items = dbLogic.get_menu_items()

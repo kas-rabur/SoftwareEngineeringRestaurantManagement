@@ -1,58 +1,76 @@
-.staff-menu-wrapper {
+.dropdown-header {
+    width: 100%;
+    background: #4caf50;
+    padding: 10px;
+    text-align: center;
+    border-radius: 8px;
+    margin-bottom: 12px;
+  }
+  
+  .dropdown-toggle {
+    background: none;
+    border: none;
+    color: white;
+    font-size: 1.1rem;
+    font-weight: bold;
+    cursor: pointer;
+  }
+  
+  .dropdown-toggle:hover {
+    opacity: 0.9;
+  }
+  
+  .dropdown-panel {
+    background: #f7f9fc;
+    padding: 15px;
+    margin-bottom: 12px;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+  }
+  
+  .staff-page {
+    padding: 20px;
+  }
+  
+  .staff-menu-wrapper {
     max-width: 100%;
     margin-right: 110px;
-}
-
-.selected-items {
+  }
+  
+  .staff-info-wrapper {
+    display: flex;
+    margin-bottom: 20px;
+  }
+  
+  .selected-items {
     flex: 1;
     max-width: 50%;
     margin-top: 30px;
     padding: 15px;
     background-color: #fff;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
-    transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
     text-align: center;
     border-radius: 8px;
     margin-left: 35px;
     margin-right: 10px;
-}
-.selected-items:hover {
+  }
+  
+  .selected-items:hover {
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.30);
-    transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
-}
-
-.selected-items ul {
-    list-style-type: none;
+  }
+  
+  .selected-items ul {
+    list-style: none;
     padding: 0;
-}
-
-.selected-items li {
+  }
+  
+  .selected-items li {
     padding: 6px 0;
     border-bottom: 1px solid #ddd;
-}
-.customer-details {
-    flex: 1;
-    max-width: 50%;
-    margin-top: 30px;
-    padding: 15px;
-    background-color: #ffffff;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
-    transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
-    text-align: center;
-    align-content: center;
-    border-radius: 8px;
-    margin-right: 35px;
-    margin-left: 10px
-}
-.customer-details:hover {
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.30);
-    transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
-}
-.staff-info-wrapper{
-    display: flex;
-    margin-bottom: 20px;
-}
-.remove-button {
+  }
+  
+  .remove-button {
     padding: 3px 6px;
     background-color: #ff3434;
     color: #fff;
@@ -61,59 +79,96 @@
     cursor: pointer;
     margin-bottom: 15px;
     font-size: 0.95rem;
-    transition: background-color 0.2s ease-in-out;
-}
-
-.remove-button:hover {
+    transition: background-color 0.2s ease;
+  }
+  
+  .remove-button:hover {
     background-color: #ca2929;
-}
-.customer-form {
+  }
+  
+  .customer-details {
+    flex: 1;
+    max-width: 50%;
+    margin-top: 30px;
+    padding: 15px;
+    background-color: #fff;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+    text-align: center;
+    border-radius: 8px;
+    margin-right: 35px;
+    margin-left: 10px;
+  }
+  
+  .customer-details:hover {
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.30);
+  }
+  
+  .customer-form {
     display: flex;
     flex-direction: column;
     gap: 15px;
     text-align: center;
-}
-
-.form-group {
+  }
+  
+  .form-group {
     display: flex;
     flex-direction: column;
     background-color: #ddd;
     padding: 10px;
     border-radius: 10px;
-    margin-left: 50px;
-    margin-right: 50px;
-}
-
-.form-group label {
+    margin: 0 50px;
+  }
+  
+  .form-group label {
     font-weight: bold;
     margin-bottom: 5px;
     color: black;
     font-size: 15px;
-}
-
-.form-group select,
-.form-group input {
+  }
+  
+  .form-group select,
+  .form-group input {
     padding: 8px;
     border: none;
     border-radius: 5px;
     background-color: #ddd;
     font-size: 1rem;
-}
-.order-button {
-    padding: 8px 16px;
+  }
+  
+  .order-button {
+    padding: 15px;
     background-color: #4caf50;
     color: #fff;
     border: none;
     border-radius: 5px;
     cursor: pointer;
     font-size: 0.95rem;
-    transition: background-color 0.2s ease-in-out;
+    transition: background-color 0.2s ease;
     margin-top: 10px;
     width: 25%;
-    padding: 15px;
-    
-
-}
-.order-button:hover {
+  }
+  
+  .order-button:hover {
     background-color: #419643;
   }
+  .res-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 8px;
+  }
+  
+  .res-table th,
+  .res-table td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+  }
+  
+  .res-table th {
+    background-color: #f2f2f2;
+  }
+  
+  .error {
+    color: #c00;
+  }
+  
