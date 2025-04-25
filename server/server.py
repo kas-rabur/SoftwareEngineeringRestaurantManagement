@@ -185,7 +185,27 @@ def make_order():
         return jsonify({"message": "Internal server error"}), 500
 
     
-    
+@app.route("/api/getAllOrders", methods=["GET"])
+def get_all_orders():
+    print("Received get all orders request")
+    result = dbLogic.get_all_orders()
+    print(f"Raw orders: {result}")
+
+    orders = [
+        {
+            "order_id":    row[0],
+            "email":       row[1],
+            "table_number":row[2],
+            "items":       row[3],
+            "total_amount":row[4],
+            "status":      row[5],
+            "order_date":  row[6],
+            "order_time":  row[7]
+        }
+        for row in result
+    ]
+    return jsonify({"orders": orders}), 200
+   
     
 if __name__ == "__main__":
     app.run(debug=True, port=5000)

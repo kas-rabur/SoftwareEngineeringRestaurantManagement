@@ -1,121 +1,104 @@
 .menu-items-card {
-    background: #fff;
-    border-radius: 8px;
-    padding: 20px;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
-    transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
-    text-align: center;
-    margin: 0 auto;
-    width: 100%;
-    margin-left: 35px;
-    margin-right: 35px;
-    margin-top: 35px;
-  }
-  
-  .menu-items-card:hover {
-
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.30);
-    transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
-  }
-  
-  .menu-items-card h2 {
-    margin-bottom: 10px;
-    color: #333;
-  }
-  
-  .menu-items-card p {
-    font-size: 0.9rem;
-    color: #555;
-  }
-  
-  .fetch-menu-button {
-    padding: 8px 16px;
-    background-color: #4caf50;
-    color: #fff;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 0.95rem;
-    transition: background-color 0.2s ease-in-out;
-    margin-top: 10px;
-  }
-  
-  .fetch-menu-button:hover {
-    background-color: #419643;
-  }
-  
-  .error-message {
-    color: red;
-    font-size: 0.9rem;
-    margin-top: 10px;
-  }
-  
-  .menu-items-list {
-    margin-top: 20px;
-    list-style: none;
-    padding: 0;
-    display: flex;      
-    flex-wrap: wrap;         
-    gap: 10px;               
-  }
-  
-  
-  .menu-item {
-    background-color: #eef2f5;
-    border-radius: 8px;
-    padding: 20px;
-    font-size: 0.9rem;
-    color: #333;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-    transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
-    flex: 1 1 200px;
-    max-width: 150px;
-    min-width: 150px;
-    text-align: center;
-
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    height: 220px; 
+  background: #fff;
+  border-radius: 8px;
+  padding: 20px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+  transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+  text-align: center;
+  width: 95%;
+  max-width: none;
+  margin: 35px 0;
 }
 
-  
+.menu-items-card:hover {
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.30);
+}
 
-  .menu-item:hover {
-    transform: scale(1.03);
-    background-color: #dde6ee;
-  }
-  
-  
-  .menu-item h3 {
-    margin: 0 0 5px;
-    font-size: 1rem;
-    color: #222;
-  }
-  
-  .menu-item p {
-    margin: 4px 0;
-    font-size: 0.9rem;
-    color: #444;
-    justify-content: space-between;
-   
-  }
+.menu-items-card h2 {
+  margin-bottom: 10px;
+  color: #333;
+}
 
-  .add-button {
-    padding: 8px 16px;
-    background-color: #4caf50;
-    color: #fff;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    margin-bottom: 15px;
-    font-size: 0.95rem;
-    transition: background-color 0.2s ease-in-out;
-  }
-  
-  .add-button:hover {
-    background-color: #419643;
-  }
+.menu-items-card p {
+  font-size: 0.9rem;
+  color: #555;
+}
 
+.fetch-menu-button {
+  padding: 8px 16px;
+  background-color: #4caf50;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 0.95rem;
+  transition: background-color 0.2s ease-in-out;
+  margin-top: 10px;
+}
 
-  
+.fetch-menu-button:hover {
+  background-color: #419643;
+}
+
+.error-message {
+  color: red;
+  font-size: 0.9rem;
+  margin-top: 10px;
+}
+
+.menu-items-list {
+  margin-top: 20px;
+  list-style: none;
+  padding: 0;
+
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 16px;
+}
+
+.menu-item {
+  background-color: #eef2f5;
+  border-radius: 8px;
+  padding: 16px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: 220px;
+  max-height: 260px;
+}
+
+.menu-item:hover {
+  transform: scale(1.03);
+  background-color: #dde6ee;
+}
+
+.menu-item h3 {
+  margin: 0 0 8px;
+  font-size: 1rem;
+  color: #222;
+}
+
+.menu-item p {
+  margin: 4px 0;
+  font-size: 0.9rem;
+  color: #444;
+  flex-grow: 1; 
+}
+
+.add-button {
+  padding: 8px 16px;
+  background-color: #4caf50;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-top: 12px;
+  font-size: 0.95rem;
+  transition: background-color 0.2s ease-in-out;
+}
+
+.add-button:hover {
+  background-color: #419643;
+}

@@ -154,3 +154,14 @@ def make_order(email, table_id, items, amount, order_date, order_time):
         return f"Error placing order: {e}"
     finally:
         conn.close()
+
+def get_all_orders():
+    conn = connect_db()
+    cursor = conn.cursor()
+    cursor.execute("""
+        SELECT order_id, email, table_number, items, total_amount, status, order_date, order_time
+        FROM Orders
+    """)
+    orders = cursor.fetchall()
+    conn.close()
+    return orders

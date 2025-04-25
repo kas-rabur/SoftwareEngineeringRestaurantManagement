@@ -2,7 +2,7 @@ import React from "react";
 import "../styles/HomePage.css";
 import Card from "./Card";
 import "../styles/Card.css";
-import restaurantImage from "../images/restaurant_stock.webp";
+
 
 const HomePage = () => {
   return (
