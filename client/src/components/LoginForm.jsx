@@ -53,7 +53,7 @@ function LoginForm() {
     <div className="login-box">
       <form className="login-form" onSubmit={handleSubmit}>
         <h2>Login to Your Dashboard</h2>
-        <div className="form-group">
+        <div className="form-group-login">
           <label>Email</label>
           <input
             type="text"
