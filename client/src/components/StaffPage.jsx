@@ -6,6 +6,12 @@ import ViewOrdersSection from "./ViewOrderSection";
 
 const StaffPage = () => (
   <div className="staff-page">
+    <header className="dashboard-header">
+      <h1>Welcome to the Staff Dashboard</h1>
+      <p>
+        Select an action from the dashboard below.
+      </p>
+    </header>
     <OrderSection />
     <ReservationsSection />
     <ViewOrdersSection />
