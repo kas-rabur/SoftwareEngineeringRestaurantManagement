@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import "../styles/StaffPage.css"; 
+import "../styles/StaffPage.css";
 import MenuItemsCard from "./MenuItemsCard";
 import SelectedItems from "./SelectedItems";
 import CustomerDetails from "./CustomerDetails";
@@ -11,18 +11,32 @@ const OrderSection = () => {
   const [selectedItems, setSelectedItems] = useState([]);
 
   useEffect(() => {
-    fetch("/api/getCustomerEmails")
-      .then(res => res.json())
-      .then(data => setEmails(data.emails))
-      .catch(console.error);
-    fetch("/api/getTableNumbers")
-      .then(res => res.json())
-      .then(data => setTables(data.tables))
-      .catch(console.error);
+    const fetchInitialData = async () => {
+      try {
+        const resEmails = await fetch("/api/getCustomerEmails", {
+          method: "GET",
+          headers: { "Content-Type": "application/json" }
+        });
+        const dataEmails = await resEmails.json();
+        setEmails(dataEmails.emails);
+
+        const resTables = await fetch("/api/getTableNumbers", {
+          method: "GET",
+          headers: { "Content-Type": "application/json" }
+        });
+        const dataTables = await resTables.json();
+        setTables(dataTables.tables);
+      } catch (error) {
+        console.error("Error fetching initial data:", error);
+      }
+    };
+
+    fetchInitialData();
   }, []);
 
   const handleAddItem = item =>
     setSelectedItems(prev => [...prev, item]);
+
   const handleRemoveItem = idx =>
     setSelectedItems(prev => prev.filter((_, i) => i !== idx));
 

@@ -1,211 +1,130 @@
 from flask import Flask, request, jsonify
 from flask_cors import CORS
-import databaseLogic as dbLogic
 import jwt
 import os
 import datetime
 
+from databaseLogic import Database
 
 app = Flask(__name__)
-CORS(app)  
+CORS(app)
 
-secret_key = "1234567890" #temp secret key
+DB = Database(db_path='database.db')
+secret_key = os.environ.get('SECRET_KEY', '1234567890')
 
-# token verification 
 def verify_token():
     auth_header = request.headers.get("Authorization")
     if not auth_header:
         return None, jsonify({"message": "Missing token"}), 401
 
     token = auth_header.split(" ")[1] if " " in auth_header else auth_header
-
     try:
         payload = jwt.decode(token, secret_key, algorithms=["HS256"])
-        return payload, None, None  
+        return payload, None, None
     except jwt.ExpiredSignatureError:
         return None, jsonify({"message": "Token expired"}), 401
     except jwt.InvalidTokenError:
         return None, jsonify({"message": "Invalid token"}), 401
 
-    
-#register route 
 @app.route("/api/register", methods=["POST"])
 def register_user():
-    print("Received registration request")
     data = request.get_json()
-
     username = data.get("username")
-    email = data.get("email")
+    email    = data.get("email")
     password = data.get("password")
-    contact = data.get("contact")
-
-    print(f"Registering user: {username}, {email}")
-
-    result = dbLogic.register_customer(username,contact, email, password)
-    print(result)
+    contact  = data.get("contact")
+    result = DB.register_customer(username, contact, email, password)
     return jsonify({"message": result}), 200
 
-#login route
 @app.route("/api/login", methods=["POST"])
 def login_user():
     data = request.get_json()
-    email = data.get("email") 
+    email    = data.get("email")
     password = data.get("password")
-
-    user = dbLogic.login_user(email, password)  
-    if user:
-        payload = {
-            "email": user["email"],
-            "role": user["role"],
-            "exp": datetime.datetime.now(datetime.UTC) + datetime.timedelta(hours=1)
-        }
-        token = jwt.encode(payload, secret_key, algorithm="HS256")
-        return jsonify({
-            "message": "Login successful", 
-            "token": token,
-            "role": user["role"]  
-        }), 200
-    else:
+    user = DB.login_user(email, password)
+    if not user:
         return jsonify({"message": "Invalid email or password"}), 401
-    
+    payload = {
+        "email": user['email'],
+        "role":  user['role'],
+        "exp":   datetime.datetime.utcnow() + datetime.timedelta(hours=1)
+    }
+    token = jwt.encode(payload, secret_key, algorithm="HS256")
+    return jsonify({"message": "Login successful", "token": token, "role": user['role']}), 200
+
 @app.route("/api/getTableAvailability", methods=["POST"])
 def get_table_availability():
     data = request.get_json()
     date = data.get("date")
     time = data.get("time")
+    if not date or not time:
+        return jsonify({"message":"Missing date or time"}), 400
+    tables = DB.get_all_tables_with_status(date, time)
+    return jsonify({"tables": tables}), 200
 
-    table_status = dbLogic.get_all_tables_with_status(date, time)
-
-    return jsonify({"tables": table_status}), 200
 
 @app.route("/api/makeReservation", methods=["POST"])
-def make_res():
-    print("Received reservation request")
+def make_reservation():
     data = request.get_json()
-
-    customer_email = request.headers.get('email')
-    reservation_date = data.get("ReservationDate")
-    reservation_time = data.get("ReservationTime")
-    table_id = data.get("TableID")
-
-    
-    tables = dbLogic.get_all_tables_with_status(reservation_date, reservation_time)
-    selected_table = next((t for t in tables if str(t['table_id']) == str(table_id)), None)
-    print(f"Selected table: {selected_table}")
-
-    if not selected_table:
+    email = request.headers.get('email')
+    date  = data.get("ReservationDate")
+    time  = data.get("ReservationTime")
+    table = data.get("TableID")
+    availability = DB.get_all_tables_with_status(date, time)
+    selected = next((t for t in availability if t['table_id'] == int(table)), None)
+    if not selected:
         return jsonify({"message": "Table not found"}), 404
+    if not selected['available']:
+        return jsonify({"message": f"Table {table} not available"}), 409
+    DB.create_reservation(email, date, time, table, 'confirmed')
+    return jsonify({"message": "Reservation created"}), 200
 
-    if selected_table['available'] != True:
-        return jsonify({"message": f"Table {table_id} is not available at that time"}), 409
-
-    result = dbLogic.create_reservation(customer_email, reservation_date, reservation_time, table_id, "confirmed")
-    return jsonify({"message": result}), 200
-
-
-@app.route("/api/getReservations", methods=["POST"])
+@app.route("/api/getReservations", methods=["Post"])
 def get_reservations():
-    print("Received get reservations request")
-
     data = request.get_json()
     email = data.get("email")
-    print(f"Email received: {email}")
-
-    result = dbLogic.get_reservations(email)
-    print(f"Raw result: {result}")
-
-    #convert tuples into list of dictionaries
-    reservations = [
-        {
-            "reservation_date": row[0],
-            "reservation_time": row[1],
-            "table_number": row[2]
-        }
-        for row in result
-    ]
-
-    return jsonify({"reservations": reservations})
+    print(f"Email: {email}")
+    rows  = DB.get_reservations(email)
+    reservations = [{"reservation_date": r[0], "reservation_time": r[1], "table_number": r[2]} for r in rows]
+    return jsonify({"reservations": reservations}), 200
 
 @app.route("/api/getAllReservations", methods=["GET"])
 def get_all_reservations():
-    print("Received get all reservations request")
-    result = dbLogic.get_all_reservations()
-    print(f"Raw result: {result}")
+    rows = DB.get_all_reservations()
+    reservations = [{"reservation_id": r[0], "customer_email": r[1], "reservation_date": r[2],
+                     "reservation_time": r[3], "table_id": r[4], "status": r[5]} for r in rows]
+    return jsonify({"reservations": reservations}), 200
 
-    reservations = [
-        {
-            "reservation_id": row[0],
-            "customer_email": row[1],
-            "reservation_date": row[2],
-            "reservation_time": row[3],
-            "table_id": row[4],
-            "status": row[5]
-        }
-        for row in result
-    ]
-
-    return jsonify({"reservations": reservations})
-
- 
-@app.route("/api/getMenuItems", methods=["POST"])
+@app.route("/api/getMenuItems", methods=["GET"])
 def get_menu_items():
-    items = dbLogic.get_menu_items()
-    return jsonify({"items": items})
+    items = DB.get_menu_items()
+    return jsonify({"items": items}), 200
 
 @app.route("/api/getCustomerEmails", methods=["GET"])
 def get_customer_emails():
-    emails = dbLogic.get_customer_emails()
-    return jsonify({"emails": emails})
+    emails = DB.get_customer_emails()
+    return jsonify({"emails": emails}), 200
 
 @app.route("/api/getTableNumbers", methods=["GET"])
 def get_table_numbers():
-    tables = dbLogic.get_table_numbers()
-    return jsonify({"tables": tables})
+    tables = DB.get_table_numbers()
+    return jsonify({"tables": tables}), 200
 
 @app.route("/api/makeOrder", methods=["POST"])
 def make_order():
-    try:
-        data = request.get_json()
-        email = data.get("email")
-        table_id = data.get("table_id")
-        items = data.get("items")
-        amount = data.get("amount")
-        order_date = data.get("order_date")
-        order_time = data.get("order_time")
+    data = request.get_json()
+    result = DB.make_order(data.get('email'), data.get('table_id'), data.get('items'),
+                           data.get('amount'), data.get('order_date'), data.get('order_time'))
+    status = 200 if not result.startswith('Error') else 500
+    return jsonify({"message": result}), status
 
-        result = dbLogic.make_order(email, table_id, items, amount, order_date, order_time)
-
-        if result.startswith("Error"):
-            return jsonify({"message": result}), 500
-
-        return jsonify({"message": result}), 200
-
-    except Exception as e:
-        print(f"Server error during make_order: {e}")
-        return jsonify({"message": "Internal server error"}), 500
-
-    
 @app.route("/api/getAllOrders", methods=["GET"])
 def get_all_orders():
-    print("Received get all orders request")
-    result = dbLogic.get_all_orders()
-    print(f"Raw orders: {result}")
-
-    orders = [
-        {
-            "order_id":    row[0],
-            "email":       row[1],
-            "table_number":row[2],
-            "items":       row[3],
-            "total_amount":row[4],
-            "status":      row[5],
-            "order_date":  row[6],
-            "order_time":  row[7]
-        }
-        for row in result
-    ]
+    rows = DB.get_all_orders()
+    orders = [{"order_id": r[0], "email": r[1], "table_number": r[2], "items": r[3],
+               "total_amount": r[4], "status": r[5], "order_date": r[6], "order_time": r[7]}
+              for r in rows]
     return jsonify({"orders": orders}), 200
-   
-    
+
 if __name__ == "__main__":
     app.run(debug=True, port=5000)
