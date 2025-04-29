@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import "../styles/StaffPage.css";
-import creditCardIcon from "../images/credit-card.png";
+import creditCardIcon from "../images/paymentcards.webp";
 
 const CustomerDetails = ({ items, emails, tables, onOrderPlaced }) => {
   const [email, setEmail] = useState("");
