@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "../styles/StaffPage.css";
 import creditCardIcon from "../images/paymentcards.webp";
 
@@ -7,30 +7,50 @@ const CustomerDetails = ({ items, emails, tables, onOrderPlaced }) => {
   const [table, setTable] = useState("");
   const [date, setDate] = useState("");
   const [time, setTime] = useState("");
+  const [token, setToken] = useState("");
   const total = items.reduce((sum, i) => sum + i.price, 0);
+
+  // load auth token from localStorage (or wherever you store it)
+  useEffect(() => {
+    const stored = localStorage.getItem("token");
+    if (stored) setToken(stored);
+  }, []);
 
   const handleSubmit = () => {
     if (!email || !table || !date || !time || items.length === 0) {
-      return alert("Please fill in all fields and add at least one item.");
+      return alert("please fill in all fields and add at least one item.");
     }
+
     fetch("/api/makeOrder", {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
+      headers: {
+        "Content-Type": "application/json",
+        // include bearer token for authorization
+        Authorization: `Bearer ${token}`,
+      },
       body: JSON.stringify({
         email,
         table_id: table,
         items: JSON.stringify(items.map(i => i.item_name)),
         amount: total,
         order_date: date,
-        order_time: time
-      })
+        order_time: time,
+      }),
     })
-      .then(r => r.json())
+      .then(r => {
+        if (!r.ok) {
+          throw new Error(`status ${r.status}`);
+        }
+        return r.json();
+      })
       .then(data => {
-        alert(data.message || "Order placed!");
+        alert(data.message || "order placed!");
         onOrderPlaced();
       })
-      .catch(console.error);
+      .catch(err => {
+        console.error(err);
+        alert(`failed to place order: ${err.message}`);
+      });
   };
 
   return (

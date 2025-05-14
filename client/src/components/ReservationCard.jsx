@@ -7,15 +7,15 @@ const ReservationCard = () => {
     const [ReservationTime, setReservationTime] = useState("");
     const [TableID, setTableID] = useState("");
 
+    // extract email from stored JWT
     const getEmailFromToken = () => {
         const token = localStorage.getItem("token");
         if (!token) return null;
-
         try {
             const decoded = jwtDecode(token);
             return decoded.email;
         } catch (err) {
-            console.error("Invalid token", err);
+            console.error("invalid token", err);
             return null;
         }
     };
@@ -23,35 +23,39 @@ const ReservationCard = () => {
     const handleReservation = async () => {
         const email = getEmailFromToken();
         if (!email || !ReservationDate || !ReservationTime || !TableID) {
-            alert("Please fill in all fields and ensure you're logged in.");
-            return;
+            return alert("please fill in all fields and ensure you're logged in.");
+        }
+
+        // validate table ID is numeric
+        const tableNum = parseInt(TableID, 10);
+        if (isNaN(tableNum)) {
+            return alert("table ID must be a number");
         }
 
         try {
             const token = localStorage.getItem("token");
-            const res = await fetch("http://localhost:5000/api/makeReservation", {
+            const res = await fetch("/api/makeReservation", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
-                    "email": email,
-                    "Authorization": `Bearer ${token}`,
+                    Authorization: `Bearer ${token}`,
                 },
                 body: JSON.stringify({
                     ReservationDate,
                     ReservationTime,
-                    TableID
+                    TableID: tableNum,
                 }),
             });
 
             const data = await res.json();
             if (res.ok) {
-                alert("Reservation successful!");
+                alert("reservation successful!");
             } else {
-                alert("Error: " + data.message);
+                alert(`error: ${data.message}`);
             }
         } catch (err) {
-            console.error("Submission error:", err);
-            alert("Failed to reserve.");
+            console.error("submission error:", err);
+            alert("failed to reserve.");
         }
     };
 
@@ -82,7 +86,7 @@ const ReservationCard = () => {
                 </label>
 
                 <label className="reservation-form-label">
-                    Table:
+                    Table ID:
                     <input
                         type="text"
                         value={TableID}
@@ -91,7 +95,9 @@ const ReservationCard = () => {
                     />
                 </label>
 
-                <button onClick={handleReservation} className="reservation-button">Reserve Now</button>
+                <button onClick={handleReservation} className="reservation-button">
+                    Reserve Now
+                </button>
             </div>
         </div>
     );
